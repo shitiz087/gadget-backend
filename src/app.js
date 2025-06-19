@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
-const gadgetRoutes = require('./routes/gadget.routes');
 require('dotenv').config();
+
+const gadgetRoutes = require('../src/routes/gadget.routes');
 
 // Middleware
 app.use(express.json());
