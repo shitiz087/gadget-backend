@@ -59,6 +59,17 @@ class GadgetController {
       res.status(400).json({ success: false, message: err.message });
     }
   };
+
+
+  createGadget = async (req, res) => {
+    try {
+      await this.gadgetService.createGadget(req.body);
+      res.status(200).json({ success: true, message: "Gadget Added" });
+    } catch (err) {
+      res.status(400).json({ success: false, message: err.message });
+    }
+  };
+
 }
 
 module.exports = GadgetController;

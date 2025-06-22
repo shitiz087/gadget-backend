@@ -15,6 +15,7 @@ router.use(authMiddleware);
 
 router.get("/", controller.getAllGadgets);
 router.get("/:id", controller.getGadgetById);
+router.post("/", controller.createGadget);
 router.put("/:id", controller.updateGadgetById);
 router.put("/", controller.updateGadgetsBulk);
 router.delete("/:id", controller.deleteGadgetById);

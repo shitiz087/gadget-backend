@@ -6,6 +6,7 @@ const {
 } = require("../validations/gadget.validation");
 
 const { encrypt, decrypt } = require("../utils/crypto.util");
+const { mapGadget } = require("../responseMappers/gadget.mapper");
 
 class GadgetService {
   constructor(gadgetRepository) {
@@ -14,10 +15,7 @@ class GadgetService {
 
   async getAllGadgets() {
     const gadgets = await this.gadgetRepository.findAll();
-    return gadgets.map((g) => ({
-      ...g,
-      secretInfo: g.secretInfo ? decrypt(g.secretInfo) : undefined,
-    }));
+    return gadgets.map(mapGadget);
   }
 
   async getGadgetById(id) {
@@ -35,7 +33,8 @@ class GadgetService {
 
   async createGadget(data) {
     const { error } = gadgetSchema.validate(data);
-    if (error) throw new Error(`Validation failed: ${error.details[0].message}`);
+    if (error)
+      throw new Error(`Validation failed: ${error.details[0].message}`);
 
     const gadgetData = {
       ...data,
@@ -54,7 +53,8 @@ class GadgetService {
 
     for (const gadget of gadgetList) {
       const { error } = gadgetSchema.validate(gadget);
-      if (error) throw new Error(`Validation failed: ${error.details[0].message}`);
+      if (error)
+        throw new Error(`Validation failed: ${error.details[0].message}`);
 
       const encrypted = {
         ...gadget,
@@ -72,7 +72,8 @@ class GadgetService {
     if (!id || isNaN(id)) throw new Error("Invalid ID");
 
     const { error } = gadgetUpdateSchema.validate(data);
-    if (error) throw new Error(`Validation failed: ${error.details[0].message}`);
+    if (error)
+      throw new Error(`Validation failed: ${error.details[0].message}`);
 
     const updateData = {
       ...data,
@@ -87,7 +88,8 @@ class GadgetService {
 
   async updateGadgetsBulk(gadgets) {
     const { error } = bulkUpdateSchema.validate(gadgets);
-    if (error) throw new Error(`Bulk validation failed: ${error.details[0].message}`);
+    if (error)
+      throw new Error(`Bulk validation failed: ${error.details[0].message}`);
 
     const results = await Promise.all(
       gadgets.map((g) =>
@@ -114,7 +116,9 @@ class GadgetService {
     const { error } = idListSchema.validate(idList);
     if (error) throw new Error(`Invalid ID list: ${error.details[0].message}`);
 
-    const results = await Promise.all(idList.map((id) => this.deleteGadgetById(id)));
+    const results = await Promise.all(
+      idList.map((id) => this.deleteGadgetById(id))
+    );
     return results;
   }
 }

@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 
+const cors = require("cors");
+app.use(cors());
+
 const gadgetRoutes = require("./routes/gadget.routes");
 const authRoutes = require("./routes/auth.routes");
 
